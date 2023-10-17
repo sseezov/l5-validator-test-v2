@@ -6,24 +6,24 @@ import Validator from '../index.js';
 
 test('task1', () => {
   const validator = new Validator();
-  const schema = validator.number();
+  const schema = validator.string();
 
-  assert.equal(schema.isValid(null), false); // false
-  assert.equal(schema.isValid(''), false); // false
-  assert.equal(schema.isValid(true), false); // false
-  assert.equal(schema.isValid(123), true); // true
-  assert.equal(schema.isValid(0), true); // true
+  assert.equal(schema.isValid('Hexlet'), true);
+  assert.equal(schema.isValid(''), true);
+  assert.equal(schema.isValid(true), false);
+  assert.equal(schema.isValid(123), false);
+  assert.equal(schema.isValid(), false);
 });
 
 test('task2', () => {
   const validator = new Validator();
-  const schema1 = validator.number().even();
-  const schema2 = validator.number().odd();
+  const schema1 = validator.startsFromUpperCase();
 
   assert.equal(schema1.isValid(''), false);
-  assert.equal(schema1.isValid(2), true);
-  assert.equal(schema2.isValid(2), false);
-  assert.equal(schema2.isValid(3), true);
+  assert.equal(schema1.isValid('Hexlet'), true);
+  assert.equal(schema1.isValid(' '), false);
+  assert.equal(schema1.isValid('!H!'), false);
+  assert.equal(schema1.isValid('1H!'), false);
 });
 
 test('task3', () => {
@@ -38,39 +38,34 @@ test('task3', () => {
 
 test('task4', () => {
   const validator = new Validator();
-  const schema1 = validator.array().length(4);
-  const schema2 = validator.array().length(12312312455434);
+  const schema1 = validator.array().depth(1);
+  const schema2 = validator.array().depth(10);
 
   assert.equal(schema1.isValid(null), false);
   assert.equal(schema1.isValid([]), false);
-  assert.equal(schema1.isValid([1, 2, 3, 4]), true);
-  assert.equal(schema2.isValid([]), false);
-  assert.equal(schema2.isValid([1, 23, 4, 5]), false);
+  assert.equal(schema1.isValid([1, 2, 3, 4]), false);
+  assert.equal(schema1.isValid([1, 2, 3, 4, []]), true);
+  assert.equal(schema2.isValid([1, 2, 3, [[[[[]]]]]]), false);
+  assert.equal(schema2.isValid([0, [1, [2, [3, [4, [5, [6, 7, [8, [9, [10]]]]]]]]]]), false);
 });
 
 test('task5', () => {
   const validator = new Validator();
   const schema1 = validator.object().shape({
-    id: validator.number().odd(),
-    basket: validator.array().length(3),
+    name: validator.string().startsFromUpperCase(),
+    basket: validator.array().depth(1),
   });
   const schema2 = validator.object().shape({
-    id: validator.number().even(),
-    basket: validator.array().length(1231233),
-  });
-  const schema3 = validator.object().shape({
-    id: validator.number().even(),
-    basket: validator.array().length(2),
-    payment: validator.array().length(2),
+    name: validator.string(),
+    basket: validator.array().depth(0),
+    payment: validator.array().depth(2),
   });
 
-  assert.equal(schema1.isValid({ id: 11, basket: ['potatos', 'tomatos', 'oranges'] }), true);
-  assert.equal(schema1.isValid({ id: 12, basket: ['potatos', 'tomatos', 'oranges'] }), false);
+  assert.equal(schema1.isValid({ name: 'B11', basket: ['potatos', 'tomatos', 'oranges', ['carrots']] }), true);
+  assert.equal(schema1.isValid({ name: '12', basket: ['potatos', 'tomatos', 'oranges'] }), false);
   assert.equal(schema1.isValid({}), false);
-  assert.equal(schema2.isValid({ id: 11, basket: [] }), false);
-  assert.equal(schema2.isValid([1, 23, 4, 5]), false);
-  assert.equal(schema2.isValid(2), false);
-  assert.equal(schema3.isValid({ id: 16, basket: ['apple', 'cucumber'], payment: ['10 dollars', '10 cents'] }), true);
-  assert.equal(schema3.isValid({ id: 17, basket: ['apple', 'cucumber'], payment: ['10 dollars', '10 cents'] }), false);
-  assert.equal(schema3.isValid({ id: 16, basket: ['apple'], payment: ['10 dollars', '10 cents'] }), false);
+
+  assert.equal(schema2.isValid({ name: 'sergey', basket: ['apple', 'cucumber'], payment: ['10 dollars', '10 cents', [[]]] }), true);
+  assert.equal(schema2.isValid({ name: 17, basket: ['apple', 'cucumber'], payment: ['10 dollars', '10 cents'] }), false);
+  assert.equal(schema2.isValid({ name: '213', basket: ['apple'], payment: ['10 dollars', '10 cents'] }), false);
 });
