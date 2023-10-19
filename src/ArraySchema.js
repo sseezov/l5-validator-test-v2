@@ -8,17 +8,18 @@ export default class ArraySchema {
   }
 
   maxDepth(max) {
-    const validator = (values, depth = -1) => {
-      if (!Array.isArray(values)) {
-        return depth;
-      }
-
-      const result = values.map((value) => validator(value, depth + 1));
-      return _.flattenDeep(result);
+    const validator = (values) => {
+      const iter = (element, depth = -1) => {
+        if (!Array.isArray(element)) {
+          return depth;
+        }
+        const result = element.map((value) => iter(value, depth + 1));
+        return _.flattenDeep(result);
+      };
+      return iter(values).every((val) => val <= max);
     };
 
-    const v = (value) => validator(value).every((val) => val <= max);
-    this.validators.push(v);
+    this.validators.push(validator);
     return this;
   }
 }
