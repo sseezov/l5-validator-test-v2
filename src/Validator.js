@@ -15,7 +15,3 @@ export default class Validator {
     return new ObjectSchema();
   }
 }
-
-const validator = new Validator();
-const schema1 = validator.array().maxDepth(3);
-console.log(schema1.isValid([0, 0, 0, 0, [1, [2]]]));
