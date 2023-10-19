@@ -10,7 +10,6 @@ export default class ArraySchema {
   maxDepth(max) {
     const validator = (values, depth = -1) => {
       if (!Array.isArray(values)) {
-        console.log(7777777, depth, max, depth > max);
         return depth;
       }
 
