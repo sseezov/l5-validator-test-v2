@@ -136,10 +136,10 @@ const v = new Validator();
 const schema1 = v.array();
 schema1.isValid([1, 2]); // true
 
-const schema2 = v.array().depth(3);
-schema2.isValid([1, 2]); // false
-schema2.isValid([1, [2, [3]]]); // false
-schema2.isValid([1, [2, [3, [4]]]]); // true
+const schema2 = v.array().maxDepth(3);
+schema2.isValid([1, 2]); // true
+schema2.isValid([1, [2, [3]]]); // true
+schema2.isValid([1, [2, [3, [4]]]]); // false
 ```
 
 После добавления метода `depth()`, экземпляр валидатора массивов будет способен проверять, соответствует ли длина массива заданной в методе длине.
@@ -159,7 +159,7 @@ const v = new Validator();
 // Позволяет описывать валидацию для свойств объекта
 const schema = v.object().shape({
   name: v.string().startsFromUpperCase(), // теперь, при валидации объекта с ключом id, значение этого ключа пройдет валидацию в соответствии с текущими методами
-  friends: v.array().depth(0),
+  friends: v.array().maxDepth(0),
 });
 
 schema.isValid({ name: 'sergey', friends: ['mark', 'john', 'anna'] }); // true
