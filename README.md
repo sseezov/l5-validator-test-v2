@@ -162,7 +162,7 @@ const schema = v.object().shape({
   friends: v.array().maxDepth(0),
 });
 
-schema.isValid({ name: 'sergey', friends: ['mark', 'john', 'anna'] }); // true
+schema.isValid({ name: 'Sergey', friends: ['mark', 'john', 'anna'] }); // true
 schema.isValid({ name: 12, friends: ['potatos', 'tomatos', 'oranges'] }); // false
 schema.isValid({ name: 'andrey', friends: ['sergey',['ivan', 'anatoly']] }); // false
 ```
