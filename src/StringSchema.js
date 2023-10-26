@@ -1,5 +1,7 @@
 export default class StringSchema {
-  validators = [(value) => typeof value === 'string'];
+  constructor(validators) {
+    this.validators = [...validators];
+  }
 
   isValid(string) {
     return this.validators.every((validator) => validator(string));
@@ -9,19 +11,16 @@ export default class StringSchema {
     const forbiddenValues = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '?', ' '];
     const validator = (value) => (value.length > 0 ? value[0].toUpperCase() === value[0]
       && !forbiddenValues.includes(value[0]) : false);
-    this.validators.push(validator);
-    return this;
+    return new StringSchema([...this.validators, validator]);
   }
 
   length(num) {
     const validator = (value) => value.length === num;
-    this.validators.push(validator);
-    return this;
+    return new StringSchema([...this.validators, validator]);
   }
 
   hasExclamation() {
     const validator = (value) => value.includes('!');
-    this.validators.push(validator);
-    return this;
+    return new StringSchema([...this.validators, validator]);
   }
 }
