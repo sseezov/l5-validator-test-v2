@@ -66,14 +66,14 @@ test('task4', () => {
 
   assert.equal(schema1.isValid(null), false);
   assert.equal(schema1.isValid([]), true);
-  assert.equal(schema1.isValid([1, 2, 3, 4]), true);
+  assert.equal(schema1.isValid([0, 0, 0, 0]), true);
   assert.equal(schema1.isValid([0, 0, 0, 0, [1], [1, [2]]]), false);
 
-  assert.equal(schema2.isValid([1, 2, 3, [[[[[]]]]]]), true);
+  assert.equal(schema2.isValid([1, 2, 3, [0, [1, [2, [3, [4]]]]]]), true);
   assert.equal(schema2
     .isValid([1, [2], [1, [2, [3, [4, [5, [6, [7, [8, [9, [10, [11]]]]]]]]]]]]), false);
 
-  assert.equal(schema3.isValid([1, 2, 3, [1, [2], [1, [2]], [1, [2, [3, [4]]]]]]), false);
+  assert.equal(schema3.isValid([0, 0, 0, [1, [2], [2, [3]], [1, [2, [3, [4]]]]]]), false);
   assert.equal(schema3.isValid([[1], [[2]], [[[3]]]]), true);
 });
 
