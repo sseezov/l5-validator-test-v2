@@ -14,6 +14,7 @@ export default class StringValidator{
         this.validators.push((val) => val.includes('!'))
         return this;
     }
+    
     isValid(val){
         return this.validators.every((validator) => validator(val));
     }
