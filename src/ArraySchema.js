@@ -1,6 +1,7 @@
 export default class ArrayValidator {
-    constructor() {
-        this.validators = [(val) => Array.isArray(val)]
+    constructor(validators) {
+        //
+        this.validators = validators
     }
     maxDepth(lng) {
         let validator = (val) => {
@@ -8,8 +9,7 @@ export default class ArrayValidator {
                 1 + Math.max(0, ...val.map(validator)) :
                 0;
         };
-        this.validators.push((val) => lng >= validator(val) - 1);
-        return this;
+        return new ArrayValidator([...this.validators, (val) => lng >= validator(val) - 1]);
     }
 
     isValid(val) {

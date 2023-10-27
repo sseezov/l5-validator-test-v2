@@ -1,14 +1,13 @@
 export default class ObjectValidator {
-    constructor(){
-        this.validators = [(val) => typeof val == "object"];
+    constructor(validators){
+        this.validators = validators;
     }
     shape(shapeObject){
         let keys = Object.keys(shapeObject);
-        this.validators.push((val) =>
+        return new ObjectValidator([...this.validators, (val) =>
             keys.every(p => shapeObject[p].isValid(val[p]))
         
-        );
-        return this;
+        ]);
     }
     isValid(val) {
         return this.validators.every((validator) => validator(val));

@@ -4,12 +4,12 @@ import ObjectValidator from './ObjectSchema.js'
 
 export default class Validator{
     array(){
-        return new ArrayValidator();
+        return new ArrayValidator([(val) => Array.isArray(val)]);
     }
     object(){
-        return new ObjectValidator();
+        return new ObjectValidator([(val) => typeof val == "object"]);
     }
     string(){
-        return new StringValidator();
+        return new StringValidator([(val) => typeof val == "string"]);
     }
 }
