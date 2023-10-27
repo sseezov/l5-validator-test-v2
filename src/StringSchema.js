@@ -1,6 +1,5 @@
 export default class StringValidator{
     constructor(validators){
-        //
         this.validators =validators
     }
     startsFromUpperCase(){
